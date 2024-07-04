@@ -20,20 +20,20 @@ export const AppReducer = (state, action) => {
                 ...state,
             };
 
-            case 'RED_QUANTITY':
-                state.expenses.map((expense)=>{
-                    if(expense.name === action.payload.name) {
-                        expense.quantity = expense.quantity - action.payload.quantity;
-                    }
-                    expense.quantity = expense.quantity < 0 ? 0: expense.quantity;
-                    new_expenses.push(expense);
-                    return true;
-                })
-                state.expenses = new_expenses;
-                action.type = "DONE";
-                return {
-                    ...state,
-                };
+        case 'RED_QUANTITY':
+            state.expenses.map((expense)=>{
+                if(expense.name === action.payload.name) {
+                    expense.quantity = expense.quantity - action.payload.quantity;
+                }
+                expense.quantity = expense.quantity < 0 ? 0: expense.quantity;
+                new_expenses.push(expense);
+                return true;
+            })
+            state.expenses = new_expenses;
+            action.type = "DONE";
+            return {
+                ...state,
+            };
         case 'DELETE_ITEM':
             state.expenses.map((expense)=>{
                 if(expense.name === action.payload.name) {
@@ -47,9 +47,15 @@ export const AppReducer = (state, action) => {
             return {
                 ...state,
             };
-    case 'CHG_LOCATION':
+        case 'CHG_CURRENCY':
             action.type = "DONE";
-            state.Location = action.payload;
+            state.Currency = action.payload;
+            return {
+                ...state
+            }
+        case 'UPDATE_BUDGET':
+            action.type = "DONE";
+            state.Budget = action.payload;
             return {
                 ...state
             }
@@ -62,13 +68,14 @@ export const AppReducer = (state, action) => {
 // 1. Sets the initial state when the app loads
 const initialState = {
     expenses: [
-        { id: "Shirt", name: 'Shirt', quantity: 0, unitprice: 500 },
-        { id: "Jeans", name: 'Jeans', quantity: 0, unitprice: 300 },
-        { id: "Dress", name: 'Dress', quantity: 0, unitprice: 400 },
-        { id: "Dinner set", name: 'Dinner set', quantity: 0, unitprice: 600 },
-        { id: "Bags", name: 'Bags', quantity: 0, unitprice: 200 },
+        { id: "Marketing", name: 'Marketing', allocated_budget: 50 },
+        { id: "Finance", name: 'Finance', allocated_budget: 300 },
+        { id: "Sales", name: 'Sales', allocated_budget: 70 },
+        { id: "Human Resource", name: 'Human Resource', allocated_budget: 40 },
+        { id: "IT", name: 'IT', allocated_budget: 500 },
     ],
-    Location: '£'
+    Currency: '$',
+    Budget: 2000
 };
 
 // 2. Creates the context this is the thing our components import and use to get the state
@@ -81,17 +88,18 @@ export const AppProvider = (props) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
     const totalExpenses = state.expenses.reduce((total, item) => {
-        return (total = total + (item.unitprice*item.quantity));
+        return (total += item.allocated_budget);
     }, 0);
-state.CartValue = totalExpenses;
+state.totalExpenses = totalExpenses;
 
     return (
         <AppContext.Provider
             value={{
                 expenses: state.expenses,
-                CartValue: state.CartValue,
+                Budget: state.Budget,
+                TotalExpense: state.totalExpenses,
                 dispatch,
-                Location: state.Location
+                Currency: state.Currency
             }}
         >
             {props.children}
