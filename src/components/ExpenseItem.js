@@ -3,52 +3,48 @@ import { AppContext } from '../context/AppContext';
 import { FaTimesCircle, FaPlusCircle, FaMinusCircle } from 'react-icons/fa';
 
 const ExpenseItem = (props) => {
-    const { dispatch, Currency} = useContext(AppContext);
+    const { dispatch, currency} = useContext(AppContext);
 
     const handleDeleteItem = () => {
-        const item = {
-            name: props.name,
-        };
-
         dispatch({
-            type: 'DELETE_ITEM',
-            payload: item,
+            type: 'DELETE_EXPENSE',
+            payload: props.id,
         });
     };
 
-    const handleIncByTen = () => {
+    const handleIncByTen = (name) => {
 
-        const item = {
-            name: props.name,
-            quantity: 10,
+        const expense = {
+            name: name,
+            allocated_budget: 10,
         };
 
         dispatch({
-            type: 'ADD_QUANTITY',
-            payload: item,
+            type: 'ADD_EXPENSE',
+            payload: expense,
         });
     };
 
-    const handleDecByTen = () => {
+    const handleDecByTen = (name) => {
 
-        const item = {
-            name: props.name,
-            quantity: 10,
+        const expense = {
+            name: name,
+            allocated_budget: 10,
         };
 
         dispatch({
-            type: 'REC_QUANTITY',
-            payload: item,
+            type: 'RED_EXPENSE',
+            payload: expense,
         });
     };
 
     return (
         <tr>
         <td>{props.name}</td>
-        <td>{Currency}{parseInt(props.allocated_budget)}</td>
-        <td><FaPlusCircle size='2.2em' color="green" onClick={handleIncByTen}></FaPlusCircle></td>
-        <td><FaMinusCircle size='2.2em' color="red" onClick={handleDecByTen}></FaMinusCircle></td>
-        <td><FaTimesCircle size='1em' color="grey" onClick={handleDeleteItem}></FaTimesCircle></td>
+        <td>{currency}{parseInt(props.allocated_budget)}</td>
+        <td><FaPlusCircle size='2.2em' color="green" onClick= {event => handleIncByTen(props.name)}></FaPlusCircle></td>
+        <td><FaMinusCircle size='2.2em' color="red" onClick= {event => handleDecByTen(props.name)}></FaMinusCircle></td>
+        <td><FaTimesCircle size='1.5em' color="grey" onClick={handleDeleteItem}></FaTimesCircle></td>
         </tr>
     );
 };

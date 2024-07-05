@@ -5,7 +5,7 @@ import Budget from './components/Budget';
 import SpentBudget from './components/SpentBudget';
 import RemainingBudget from './components/RemainingBudget';
 import ExpenseList from './components/ExpenseList';
-import ItemSelected from './components/ItemSelected';
+import AllocationForm from './components/AllocationForm';
 import Currency from './components/Currency';
 
 
@@ -37,7 +37,7 @@ const App = () => {
             <h3 className='mt-3'>Change Allocation</h3>
             <div className='row mt-3'>
                 <div className='col-sm'>
-                    <ItemSelected/>
+                    <AllocationForm/>
                 </div>
             </div>
         </div>
